@@ -1,17 +1,14 @@
-import { StatusBar } from "expo-status-bar";
-import { Button, Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
-import { Text, View } from "@/components/Themed";
-import { Link } from "expo-router";
+import { Text, View } from "@/components/elements/Themed";
+import { CTALinkButton } from "@/components/elements/CTALinkButton";
 
 export default function SignUpScreen() {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Sign Up</Text>
-
-			<Link href="/signin" asChild>
-				<Button title="Already have an account? Sign in here." />
-			</Link>
+			<CTALinkButton href="../auth/signup/email" label="Sign up with email" />
+			<CTALinkButton href="../auth/signin" label="Already have an account? Sign in instead." />
 		</View>
 	);
 }

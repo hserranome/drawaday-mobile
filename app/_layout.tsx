@@ -5,7 +5,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
-import { useColorScheme } from "@/components/useColorScheme";
+import { useColorScheme } from "@/utils/useColorScheme";
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -51,8 +51,9 @@ function RootLayoutNav() {
 		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 			<Stack>
 				<Stack.Screen name="index" options={{ headerShown: false }} />
-				<Stack.Screen name="signup" options={{ headerShown: false }} />
-				<Stack.Screen name="signin" options={{ headerShown: false }} />
+				<Stack.Screen name="auth/signup/index" options={{ headerShown: false }} />
+				<Stack.Screen name="auth/signup/email" options={{ headerShown: false }} />
+				<Stack.Screen name="auth/signin" options={{ headerShown: false }} />
 			</Stack>
 		</ThemeProvider>
 	);
