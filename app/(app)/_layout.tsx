@@ -1,7 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Tabs } from "expo-router";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/utils/useColorScheme";
@@ -12,44 +11,33 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>["nam
 	return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export default function TabLayout() {
+export default function AppLayout() {
 	const colorScheme = useColorScheme();
 
 	return (
 		<Tabs
 			screenOptions={{
 				tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-				// Disable the static render of the header on web
-				// to prevent a hydration error in React Navigation v6.
+				// Disable static render of the header on web to prevent hydration error in React Navigation v6.
 				headerShown: useClientOnlyValue(false, true),
 			}}
 		>
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Tab One",
-					tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-					headerRight: () => (
-						<Link href="/" asChild>
-							<Pressable>
-								{({ pressed }) => (
-									<FontAwesome
-										name="info-circle"
-										size={25}
-										color={Colors[colorScheme ?? "light"].text}
-										style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-									/>
-								)}
-							</Pressable>
-						</Link>
-					),
+					tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
 				}}
 			/>
 			<Tabs.Screen
-				name="two"
+				name="create"
 				options={{
-					title: "Tab Two",
-					tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+					tabBarIcon: ({ color }) => <TabBarIcon name="plus-square-o" color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="profile"
+				options={{
+					tabBarIcon: ({ color }) => <TabBarIcon name="pencil-square" color={color} />,
 				}}
 			/>
 		</Tabs>
