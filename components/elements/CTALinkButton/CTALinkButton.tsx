@@ -24,7 +24,7 @@ export const CTALinkButton = ({ label, href }: { label?: string; href: string })
 	return (
 		<View style={styles.button}>
 			<Link href={href as any} asChild>
-				<Pressable android_ripple={{ color: "#f0f", borderless: true }}>
+				<Pressable android_ripple={{ color: "#f0f", borderless: true, radius: 250 }}>
 					<Text style={styles.buttonText}>{label}</Text>
 				</Pressable>
 			</Link>
