@@ -18,6 +18,8 @@ export default {
 	},
 	text: "#fff",
 	background: "#000",
+	inputBackground: "#f0f0f0",
+	inputText: "#000",
 	tint: tintColorDark,
 	tabIconDefault: "#ccc",
 	tabIconSelected: tintColorDark,
