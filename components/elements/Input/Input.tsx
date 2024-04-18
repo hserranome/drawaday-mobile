@@ -2,15 +2,16 @@ import { StyleSheet, StyleProp, TextInput, ViewStyle } from "react-native";
 import { View } from "@/components/elements/Themed";
 import { Control, Controller, UseControllerProps } from "react-hook-form";
 import { ErrorMessage } from "../ErrorMessage";
+import Colors from "@/constants/Colors";
 
 const styles = StyleSheet.create({
 	input: {
-		color: "black",
-		backgroundColor: "white",
-		height: 40,
+		color: Colors.inputText,
+		backgroundColor: Colors.inputBackground,
 		borderRadius: 5,
-		paddingHorizontal: 10,
-		paddingVertical: 5,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
+		fontSize: 14,
 		borderColor: "gray",
 		borderWidth: 1,
 	},
