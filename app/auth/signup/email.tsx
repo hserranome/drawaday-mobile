@@ -1,95 +1,20 @@
-import { Pressable, StyleProp, StyleSheet, TextInput, ViewStyle } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/elements/Themed";
 import { CTALinkButton } from "@/components/elements/CTALinkButton";
 import { useCallback } from "react";
 import { appw } from "@/api/appwrite";
-import { Control, Controller, UseControllerProps, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { AppwriteException } from "react-native-appwrite/src";
+import { Input } from "@/components/elements/Input";
+import { Button } from "@/components/elements/Button";
+import { ErrorMessage } from "@/components/elements/ErrorMessage";
 
 const login = async (email: string, password: string) => {
 	await appw.account.createEmailSession(email, password);
 	const loggedInUser = await appw.account.get();
 	console.log(loggedInUser);
 };
-
-const inputStyles = StyleSheet.create({
-	input: {
-		color: "black",
-		backgroundColor: "white",
-		height: 40,
-		borderRadius: 5,
-		paddingHorizontal: 10,
-		paddingVertical: 5,
-		borderColor: "gray",
-		borderWidth: 1,
-	},
-	errorMessage: {
-		fontSize: 12,
-		color: "red",
-	},
-});
-
-type InputProps = {
-	control: Control<any>;
-	name: string;
-	placeholder: string;
-	rules: UseControllerProps<any>["rules"];
-	errors: any;
-	disabled?: boolean;
-	containerStyle?: StyleProp<ViewStyle>;
-	returnKeyType?: TextInput["props"]["returnKeyType"];
-	onSubmitEditing?: TextInput["props"]["onSubmitEditing"];
-};
-
-const Input = ({
-	control,
-	name,
-	placeholder,
-	rules,
-	errors,
-	returnKeyType,
-	disabled,
-	onSubmitEditing,
-	containerStyle,
-}: InputProps) => (
-	<View style={containerStyle}>
-		<Controller
-			control={control}
-			rules={rules}
-			name={name}
-			render={({ field: { onChange, onBlur, value, ref } }) => (
-				<TextInput
-					ref={ref}
-					placeholder={placeholder}
-					onBlur={onBlur}
-					onChangeText={onChange}
-					value={value}
-					editable={!disabled}
-					style={inputStyles.input}
-					returnKeyType={returnKeyType}
-					onSubmitEditing={onSubmitEditing}
-				/>
-			)}
-		/>
-		{errors[name]?.message && <Text style={inputStyles.errorMessage}>{errors[name].message}</Text>}
-	</View>
-);
-
-const submitButtonStyles = StyleSheet.create({
-	submitButton: {
-		backgroundColor: "blue",
-		padding: 10,
-		borderRadius: 5,
-	},
-});
-
-type SubmitButtonProps = { onPress?: () => void; disabled?: boolean };
-const SubmitButton = ({ onPress, disabled }: SubmitButtonProps) => (
-	<Pressable style={submitButtonStyles.submitButton} onPress={onPress} disabled={disabled}>
-		<Text>Sign up</Text>
-	</Pressable>
-);
 
 type SignUpFormData = {
 	email: string;
@@ -106,7 +31,6 @@ export default function SignUpEmailScreen() {
 		formState: { errors, isSubmitting },
 	} = useForm<SignUpFormData>();
 
-	//   email: string, password: string, username: string
 	const onSubmit = useCallback(async ({ email, password, username }: SignUpFormData) => {
 		try {
 			await appw.account.create("blabla", email, password, username);
@@ -184,8 +108,8 @@ export default function SignUpEmailScreen() {
 					onSubmitEditing={handleSubmit(onSubmit)}
 					containerStyle={styles.inputContainer}
 				/>
-				<SubmitButton disabled={isSubmitting} onPress={handleSubmit(onSubmit)} />
-				{errors.root?.serverError && <Text style={inputStyles.errorMessage}>{errors.root.serverError.message}</Text>}
+				<Button disabled={isSubmitting} onPress={handleSubmit(onSubmit)} />
+				<ErrorMessage message={errors?.root?.serverError?.message} />
 			</View>
 			<CTALinkButton href="../auth/signup/email" label="Sign up with email" />
 		</View>
