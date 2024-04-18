@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		backgroundColor: "#f0f0f0",
 		paddingVertical: 10,
+		paddingHorizontal: 20,
 		borderRadius: 1000,
 		overflow: "hidden",
 	},
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
 		width: "100%",
 		textAlign: "center",
 		fontSize: 20,
+		fontWeight: "600",
 	},
 });
 
