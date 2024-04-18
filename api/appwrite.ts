@@ -2,8 +2,8 @@ import { Account, Client } from "react-native-appwrite/src";
 
 const client = new Client();
 client
-	.setEndpoint("http://appwrite-nccw80c.51.178.84.122.sslip.io/v1")
-	.setProject("drawaday")
+	.setEndpoint(String(process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT))
+	.setProject(String(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID))
 	.setPlatform("com.drawaday.app");
 
 const account = new Account(client);
