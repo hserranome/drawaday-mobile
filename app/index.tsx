@@ -24,9 +24,9 @@ export default function IndexScreen() {
 					<Text style={styles.text}>with a drawing every day.</Text>
 				</View>
 				<View style={styles.buttonContainer}>
-					<CTALinkButton href="../auth/signup/email" label="Continue with email" />
+					<CTALinkButton href="auth/signup/email" label="Continue with email" />
 					<View style={styles.divider} />
-					<CTALinkButton href="../auth/signin" label="Already have an account? Sign in instead." />
+					<CTALinkButton href="auth/signin" label="Already have an account? Sign in instead." />
 				</View>
 			</View>
 		</View>
