@@ -3,12 +3,10 @@ import { StyleSheet } from "react-native";
 import { Text, View } from "@/components/elements/Themed";
 import { Button } from "@/components/elements/Button";
 import { useCallback, useContext } from "react";
-import { appw } from "@/api/appwrite";
 import { useRouter } from "expo-router";
 import { AppwriteContext } from "@/components/providers";
 
 export default function ProfileScreen() {
-	const router = useRouter();
 	const { logout } = useContext(AppwriteContext);
 
 	const signout = useCallback(async () => {
