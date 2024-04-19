@@ -9,6 +9,5 @@ client
 const account = new Account(client);
 
 export const appw = {
-	client,
 	account,
 };
