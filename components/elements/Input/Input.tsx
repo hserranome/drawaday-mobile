@@ -29,6 +29,8 @@ export type InputProps = {
 	errors: any;
 	disabled?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
+	secureTextEntry?: TextInput["props"]["secureTextEntry"];
+	keyboardType?: TextInput["props"]["keyboardType"];
 	returnKeyType?: TextInput["props"]["returnKeyType"];
 	onSubmitEditing?: TextInput["props"]["onSubmitEditing"];
 };
@@ -42,6 +44,8 @@ export const Input = ({
 	returnKeyType,
 	disabled,
 	onSubmitEditing,
+	keyboardType,
+	secureTextEntry,
 	containerStyle,
 }: InputProps) => (
 	<View style={containerStyle}>
@@ -59,7 +63,9 @@ export const Input = ({
 					editable={!disabled}
 					style={styles.input}
 					returnKeyType={returnKeyType}
+					secureTextEntry={secureTextEntry}
 					onSubmitEditing={onSubmitEditing}
+					keyboardType={keyboardType}
 				/>
 			)}
 		/>
