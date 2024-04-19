@@ -9,7 +9,7 @@ export default function IndexScreen() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.background}>
-				<Image source={require("../assets/images/welcome-bg.png")} style={styles.backgroundImage} />
+				<Image source={require("../../assets/images/welcome-bg.png")} style={styles.backgroundImage} />
 				<LinearGradient
 					colors={["transparent", "rgba(0,0,0,0.1)", "rgba(0,0,0,0.8)", "rgba(0,0,0,1)"]}
 					style={styles.backgroundOverlay}
@@ -24,9 +24,9 @@ export default function IndexScreen() {
 					<Text style={styles.text}>with a drawing every day.</Text>
 				</View>
 				<View style={styles.buttonContainer}>
-					<CTALinkButton href="auth/signup/email" label="Continue with email" />
+					<CTALinkButton href="auth/email/signup" label="Continue with email" />
 					<View style={styles.divider} />
-					<CTALinkButton href="auth/signin" label="Already have an account? Sign in instead." />
+					<CTALinkButton href="auth/email/signin" label="Already have an account? Sign in instead." />
 				</View>
 			</View>
 		</View>

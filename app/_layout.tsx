@@ -5,7 +5,6 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
-import { appw } from "@/api/appwrite";
 import { AppwriteProvider } from "@/components/providers";
 
 export { ErrorBoundary } from "expo-router";
@@ -37,9 +36,9 @@ function RootLayoutNav() {
 			<ThemeProvider value={DarkTheme}>
 				<Stack>
 					<Stack.Screen name="(app)" options={{ headerShown: false }} />
-					<Stack.Screen name="index" options={{ headerShown: false }} />
-					<Stack.Screen name="auth/signup/email" options={{ headerShown: false }} />
-					<Stack.Screen name="auth/signin" options={{ headerShown: false }} />
+					<Stack.Screen name="auth/index" options={{ headerShown: false }} />
+					<Stack.Screen name="auth/email/signup" options={{ headerShown: false }} />
+					<Stack.Screen name="auth/email/signin" options={{ headerShown: false }} />
 				</Stack>
 			</ThemeProvider>
 		</AppwriteProvider>
