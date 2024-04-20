@@ -22,12 +22,14 @@ const styles = StyleSheet.create({
 });
 
 export type InputProps = {
-	control: Control<any>;
+	control?: Control<any>;
 	name: string;
-	placeholder: string;
-	rules: UseControllerProps<any>["rules"];
-	errors: any;
+	placeholder?: string;
+	rules?: UseControllerProps<any>["rules"];
+	errors?: any;
 	disabled?: boolean;
+	value?: string;
+	onChangeText?: (text: string) => void;
 	containerStyle?: StyleProp<ViewStyle>;
 	secureTextEntry?: TextInput["props"]["secureTextEntry"];
 	keyboardType?: TextInput["props"]["keyboardType"];
@@ -43,32 +45,37 @@ export const Input = ({
 	errors,
 	returnKeyType,
 	disabled,
+	value,
 	onSubmitEditing,
 	keyboardType,
 	secureTextEntry,
 	containerStyle,
+	onChangeText,
 }: InputProps) => (
 	<View style={containerStyle}>
-		<Controller
-			control={control}
-			rules={rules}
-			name={name}
-			render={({ field: { onChange, onBlur, value, ref } }) => (
-				<TextInput
-					ref={ref}
-					placeholder={placeholder}
-					onBlur={onBlur}
-					onChangeText={onChange}
-					value={value}
-					editable={!disabled}
-					style={styles.input}
-					returnKeyType={returnKeyType}
-					secureTextEntry={secureTextEntry}
-					onSubmitEditing={onSubmitEditing}
-					keyboardType={keyboardType}
-				/>
-			)}
-		/>
-		<ErrorMessage message={errors[name]?.message} />
+		{control && (
+			<Controller
+				control={control}
+				rules={rules}
+				name={name}
+				render={({ field: { onChange, onBlur, value, ref } }) => (
+					<TextInput
+						ref={ref}
+						placeholder={placeholder}
+						onBlur={onBlur}
+						onChangeText={onChange}
+						value={value}
+						editable={!disabled}
+						style={styles.input}
+						returnKeyType={returnKeyType}
+						secureTextEntry={secureTextEntry}
+						onSubmitEditing={onSubmitEditing}
+						keyboardType={keyboardType}
+					/>
+				)}
+			/>
+		)}
+		{!control && <TextInput style={styles.input} onChangeText={onChangeText} value={value} placeholder={placeholder} />}
+		<ErrorMessage message={errors?.[name]?.message} />
 	</View>
 );

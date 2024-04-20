@@ -1,4 +1,4 @@
-import { Account, Client } from "react-native-appwrite/src";
+import { Account, Client, Databases, Storage } from "react-native-appwrite/src";
 
 const client = new Client();
 client
@@ -7,7 +7,11 @@ client
 	.setPlatform("com.drawaday.app");
 
 const account = new Account(client);
+const databases = new Databases(client);
+const storage = new Storage(client);
 
 export const appw = {
 	account,
+	databases,
+	storage,
 };
