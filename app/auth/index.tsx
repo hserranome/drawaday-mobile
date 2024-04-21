@@ -35,7 +35,7 @@ export default function IndexScreen() {
 		<>
 			<GradientOverlayImage
 				source={require("../../assets/images/auth/index-bg.png")}
-				containerStyle={{ height: "94%", bottom: 0 }}
+				containerStyle={{ height: "92%", bottom: 0 }}
 			/>
 			<View style={styles.titleContainer}>
 				<Text style={styles.text}>Share your progress,</Text>

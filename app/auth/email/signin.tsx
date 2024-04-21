@@ -57,7 +57,7 @@ export default function SignInEmailScreen() {
 			<GradientOverlayImage
 				source={require("../../../assets/images/auth/signin-bg.png")}
 				containerStyle={{ height: "85%", bottom: 0 }}
-				imageStyle={{ resizeMode: "contain", bottom: 95 }}
+				imageStyle={{ resizeMode: "contain", bottom: 100 }}
 			/>
 			<Text style={styles.title}>Sign in with email</Text>
 			<View style={styles.form}>
