@@ -1,7 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
@@ -36,9 +36,7 @@ function RootLayoutNav() {
 			<ThemeProvider value={DarkTheme}>
 				<Stack>
 					<Stack.Screen name="(app)" options={{ headerShown: false }} />
-					<Stack.Screen name="auth/index" options={{ headerShown: false }} />
-					<Stack.Screen name="auth/email/signup" options={{ headerShown: false }} />
-					<Stack.Screen name="auth/email/signin" options={{ headerShown: false }} />
+					<Stack.Screen name="auth" options={{ headerShown: false }} />
 				</Stack>
 			</ThemeProvider>
 		</AppwriteProvider>
