@@ -1,21 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
+
 import { useForm } from "react-hook-form";
+import { AppwriteException } from "react-native-appwrite/src";
 import { Input } from "@/components/elements/Input";
 import { Button } from "@/components/elements/Button";
 import { ErrorMessage } from "@/components/elements/ErrorMessage";
-import { AppwriteContext, SignUpFormData } from "@/components/providers";
+import { AppwriteContext, SignInFormData } from "@/components/providers";
 import { GradientOverlayImage } from "@/components/elements/GradientOverlayImage";
 import Colors from "@/constants/Colors";
 
 const styles = StyleSheet.create({
 	title: {
+		color: Colors.text,
 		textAlign: "center",
 		fontSize: 24,
 		fontWeight: "bold",
 		marginBottom: 20,
-		color: Colors.text,
 	},
 	form: {
 		width: "90%",
@@ -28,18 +30,18 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default function SignUpEmailScreen() {
+export default function SignInEmailScreen() {
 	const {
 		control,
 		handleSubmit,
 		setFocus,
 		setError,
 		formState: { errors, isSubmitting },
-	} = useForm<SignUpFormData>();
-	const { signUp } = useContext(AppwriteContext);
+	} = useForm<SignInFormData>();
+	const { signIn } = useContext(AppwriteContext);
 
-	const onSubmit = async ({ email, password, username }: SignUpFormData) => {
-		signUp({ email, password, username }).catch((error) => {
+	const onSubmit = async ({ email, password }: SignInFormData) => {
+		signIn({ email, password }).catch((error) => {
 			setError("root.serverError", { message: error });
 		});
 	};
@@ -47,24 +49,24 @@ export default function SignUpEmailScreen() {
 	return (
 		<>
 			<GradientOverlayImage
-				source={require("../../../assets/images/auth/signin-bg.png")}
+				source={require("../../assets/images/auth/signin-bg.png")}
 				containerStyle={{ height: "85%", bottom: 0 }}
-				imageStyle={{ resizeMode: "contain", bottom: 95 }}
+				imageStyle={{ resizeMode: "contain", bottom: 100 }}
 			/>
-			<Text style={styles.title}>Sign up with email</Text>
+			<Text style={styles.title}>Sign in with email</Text>
 			<View style={styles.form}>
 				<Input
 					control={control}
 					name="email"
 					placeholder="Email"
+					keyboardType="email-address"
+					autoCapitalize="none"
+					autoComplete="email"
 					rules={{
-						required: {
-							value: true,
-							message: "Email is required",
-						},
+						required: { value: true, message: "Email is required" },
 						pattern: {
 							value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-							message: "invalid email address",
+							message: "Invalid email address",
 						},
 					}}
 					errors={errors}
@@ -77,23 +79,13 @@ export default function SignUpEmailScreen() {
 					control={control}
 					name="password"
 					placeholder="Password"
+					secureTextEntry={true}
+					autoCapitalize="none"
+					autoComplete="password"
 					rules={{
 						required: { value: true, message: "Password is required" },
-						minLength: { value: 6, message: "Password must be at least 6 characters" },
-					}}
-					errors={errors}
-					disabled={isSubmitting}
-					returnKeyType="next"
-					onSubmitEditing={() => setFocus("username")}
-					containerStyle={styles.inputContainer}
-				/>
-				<Input
-					control={control}
-					name="username"
-					placeholder="Username"
-					rules={{
-						required: { value: true, message: "Username is required" },
-						minLength: { value: 5, message: "Username must be at least 5 characters" },
+						minLength: { value: 8, message: "Password must be at least 8 characters" },
+						maxLength: { value: 256, message: "Password must be at most 32 characters" },
 					}}
 					errors={errors}
 					disabled={isSubmitting}
@@ -101,7 +93,7 @@ export default function SignUpEmailScreen() {
 					containerStyle={styles.inputContainer}
 				/>
 				<Button
-					label="Sign up"
+					label="Sign in"
 					disabled={isSubmitting}
 					onPress={handleSubmit(onSubmit)}
 					containerStyle={styles.button}

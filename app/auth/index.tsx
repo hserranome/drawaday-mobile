@@ -42,10 +42,10 @@ export default function IndexScreen() {
 				<Text style={styles.text}>with a drawing every day.</Text>
 			</View>
 			<View style={styles.buttonsContainer}>
-				<CTALinkButton href="auth/email/signup" label="Sign up with email" />
+				<CTALinkButton href="auth/signup" label="Sign up with email" />
 				<View style={styles.divider} />
 				<Button
-					href="auth/email/signin"
+					href="auth/signin"
 					containerStyle={{ backgroundColor: "transparent" }}
 					textStyle={{ color: Colors.text, fontSize: 16 }}
 					label="Already have an account? Sign in instead."
