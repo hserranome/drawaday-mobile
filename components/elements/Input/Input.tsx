@@ -53,34 +53,53 @@ export const Input = ({
 	secureTextEntry,
 	containerStyle,
 	onChangeText,
-}: InputProps) => (
-	<View style={containerStyle}>
-		{control && (
-			<Controller
-				control={control}
-				rules={rules}
-				name={name}
-				render={({ field: { onChange, onBlur, value, ref } }) => (
-					<TextInput
-						ref={ref}
-						placeholder={placeholder}
-						onBlur={onBlur}
-						onChangeText={onChange}
-						value={value}
-						editable={!disabled}
-						style={styles.input}
-						returnKeyType={returnKeyType}
-						placeholderTextColor={Colors.inputPlaceholder}
-						secureTextEntry={secureTextEntry}
-						onSubmitEditing={onSubmitEditing}
-						keyboardType={keyboardType}
-						autoCapitalize={autoCapitalize}
-						autoComplete={autoComplete}
-					/>
-				)}
-			/>
-		)}
-		{!control && <TextInput style={styles.input} onChangeText={onChangeText} value={value} placeholder={placeholder} />}
-		<ErrorMessage message={errors?.[name]?.message} />
-	</View>
-);
+}: InputProps) => {
+	return (
+		<View style={containerStyle}>
+			{control && (
+				<Controller
+					control={control}
+					rules={rules}
+					name={name}
+					render={({ field: { ref, onChange, onBlur, value: fieldValue } }) => (
+						<TextInput
+							ref={ref}
+							onChangeText={onChange}
+							onBlur={onBlur}
+							value={fieldValue}
+							//
+							placeholder={placeholder}
+							editable={!disabled}
+							style={styles.input}
+							returnKeyType={returnKeyType}
+							placeholderTextColor={Colors.inputPlaceholder}
+							secureTextEntry={secureTextEntry}
+							onSubmitEditing={onSubmitEditing}
+							keyboardType={keyboardType}
+							autoCapitalize={autoCapitalize}
+							autoComplete={autoComplete}
+						/>
+					)}
+				/>
+			)}
+			{!control && (
+				<TextInput
+					onChangeText={onChangeText}
+					value={value}
+					// @todo: make this cleaner
+					placeholder={placeholder}
+					editable={!disabled}
+					style={styles.input}
+					returnKeyType={returnKeyType}
+					placeholderTextColor={Colors.inputPlaceholder}
+					secureTextEntry={secureTextEntry}
+					onSubmitEditing={onSubmitEditing}
+					keyboardType={keyboardType}
+					autoCapitalize={autoCapitalize}
+					autoComplete={autoComplete}
+				/>
+			)}
+			<ErrorMessage message={errors?.[name]?.message} />
+		</View>
+	);
+};
