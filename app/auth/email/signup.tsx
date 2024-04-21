@@ -1,10 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
-import * as Crypto from "expo-crypto";
 
-import { useCallback, useContext } from "react";
-import { appw } from "@/api/appwrite";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { AppwriteException } from "react-native-appwrite/src";
 import { Input } from "@/components/elements/Input";
 import { Button } from "@/components/elements/Button";
 import { ErrorMessage } from "@/components/elements/ErrorMessage";
