@@ -101,13 +101,13 @@ export default function SignUpEmailScreen() {
 					onSubmitEditing={handleSubmit(onSubmit)}
 					containerStyle={styles.inputContainer}
 				/>
+				<ErrorMessage message={errors?.root?.serverError?.message} />
 				<Button
 					label="Sign up"
 					disabled={isSubmitting}
 					onPress={handleSubmit(onSubmit)}
 					containerStyle={styles.button}
 				/>
-				<ErrorMessage message={errors?.root?.serverError?.message} />
 			</View>
 		</AuthViewContainer>
 	);
