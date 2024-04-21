@@ -5,10 +5,13 @@ import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import { Image } from "expo-image";
-import { Input } from "../Input";
-import { Button } from "../Button";
 import { appw } from "@/api/appwrite";
 import { ID } from "react-native-appwrite/src";
+import { Button } from "@/components/elements/Button";
+import { Input } from "@/components/elements/Input";
+import { Stack, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type CreateModalProps = {
 	onClose?: () => void;
@@ -19,13 +22,18 @@ type ImageItem = {
 	status?: "loading" | "done" | "error";
 };
 
-export const CreateModal = ({ onClose }: CreateModalProps) => {
+export default function CreateScreen() {
+	const insets = useSafeAreaInsets();
+
 	const [description, setDescription] = useState("");
 	const [images, setImages] = useState<ImageItem[]>([]);
 	const [selectedImage, setSelectedImage] = useState<number | null>(null);
 	const [type, setType] = useState<CameraType>(CameraType.back);
 	const [flashMode, setFlashMode] = useState<FlashMode>(FlashMode.off);
+
+	const router = useRouter();
 	const [permission, requestPermission] = Camera.useCameraPermissions();
+
 	const cameraRef = useRef<Camera>(null);
 	const imageScrollViewRef = useRef<ScrollView>(null);
 
@@ -49,18 +57,12 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 	}, []);
 
 	const takePicture = useCallback(async () => {
-		var startTime = performance.now();
-
 		const photo = await cameraRef.current?.takePictureAsync({
 			quality: 0,
 
 			skipProcessing: true,
 			base64: false,
 		});
-
-		var endTime = performance.now();
-
-		console.log(`Call to doSomething took ${endTime - startTime} milliseconds.`);
 
 		if (!photo?.uri) return;
 
@@ -155,7 +157,7 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 	const hasCameraAccess = useMemo(() => !!permission && permission.granted, [permission]);
 
 	return (
-		<Modal animationType="slide" transparent={true}>
+		<View style={[styles.wrapper, { paddingTop: insets.top }]}>
 			<View style={styles.container}>
 				<View style={styles.mainImageContainer}>
 					{selectedImage === null && (
@@ -217,21 +219,22 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 					<Button label="Create" onPress={onSubmit} containerStyle={styles.button} />
 				</View>
 				<View style={styles.containerTop}>
-					<Pressable onPress={onClose} style={styles.closeButton}>
+					<Pressable onPress={() => {}} style={styles.closeButton}>
 						<FontAwesome name="close" style={styles.topIcon} />
 					</Pressable>
 				</View>
 			</View>
-		</Modal>
+		</View>
 	);
-};
+}
 
 const styles = StyleSheet.create({
+	wrapper: {
+		flex: 1,
+	},
 	container: {
-		position: "absolute",
-		bottom: 0,
+		flex: 1,
 		width: "100%",
-		height: "100%",
 		backgroundColor: Colors.background,
 	},
 	containerTopBackground: {

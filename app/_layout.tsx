@@ -6,11 +6,12 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
 import { AppwriteProvider } from "@/components/providers";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export { ErrorBoundary } from "expo-router";
 
 export const unstable_settings = {
-	initialRouteName: "app/index",
+	initialRouteName: "app",
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -32,10 +33,12 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	return (
-		<AppwriteProvider>
-			<ThemeProvider value={DarkTheme}>
-				<Stack screenOptions={{ headerShown: false }} />
-			</ThemeProvider>
-		</AppwriteProvider>
+		<SafeAreaProvider>
+			<AppwriteProvider>
+				<ThemeProvider value={DarkTheme}>
+					<Stack screenOptions={{ headerShown: false }} />
+				</ThemeProvider>
+			</AppwriteProvider>
+		</SafeAreaProvider>
 	);
 }

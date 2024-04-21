@@ -106,7 +106,7 @@ export function AppwriteProvider({ children }: PropsWithChildren) {
 	};
 
 	useEffect(() => {
-		if (user) router.replace("/(app)/");
+		if (user) router.replace("/app/");
 		if (!user) router.replace("/auth/");
 	}, [user]);
 

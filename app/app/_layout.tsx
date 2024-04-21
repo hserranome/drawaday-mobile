@@ -4,7 +4,6 @@ import { Stack, Tabs, useRouter } from "expo-router";
 
 import Colors from "@/constants/Colors";
 import { useClientOnlyValue } from "@/utils/useClientOnlyValue";
-import { CreateModal } from "@/components/elements/CreateModal";
 import { AppwriteContext } from "@/components/providers";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -15,6 +14,7 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>["nam
 export default function AppLayout() {
 	const { initialized } = useContext(AppwriteContext);
 	const [createModalVisible, setCreateModalVisible] = useState(false);
+	const router = useRouter();
 
 	if (!initialized) return <></>;
 	return (
@@ -29,30 +29,26 @@ export default function AppLayout() {
 				<Tabs.Screen
 					name="index"
 					options={{
+						title: "",
 						tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
 					}}
 				/>
 				<Tabs.Screen
-					name="empty"
+					name="create"
 					options={{
+						title: "",
 						headerShown: false,
 						tabBarIcon: ({ color }) => <TabBarIcon name="plus-square-o" color={color} />,
 					}}
-					listeners={() => ({
-						tabPress: (e) => {
-							e.preventDefault();
-							setCreateModalVisible(true);
-						},
-					})}
 				/>
 				<Tabs.Screen
 					name="profile"
 					options={{
+						title: "",
 						tabBarIcon: ({ color }) => <TabBarIcon name="pencil-square" color={color} />,
 					}}
 				/>
 			</Tabs>
-			{createModalVisible && <CreateModal onClose={() => setCreateModalVisible(false)} />}
 		</>
 	);
 }
