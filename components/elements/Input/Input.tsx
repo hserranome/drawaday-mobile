@@ -6,6 +6,7 @@ import Colors from "@/constants/Colors";
 const styles = StyleSheet.create({
 	input: {
 		color: Colors.inputText,
+
 		backgroundColor: Colors.inputBackground,
 		borderRadius: 5,
 		paddingVertical: 10,
@@ -69,6 +70,7 @@ export const Input = ({
 						editable={!disabled}
 						style={styles.input}
 						returnKeyType={returnKeyType}
+						placeholderTextColor={Colors.inputPlaceholder}
 						secureTextEntry={secureTextEntry}
 						onSubmitEditing={onSubmitEditing}
 						keyboardType={keyboardType}
