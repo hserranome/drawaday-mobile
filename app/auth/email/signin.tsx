@@ -1,6 +1,5 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-import { Text, View } from "@/components/elements/Themed";
 import { useCallback, useContext } from "react";
 
 import { useForm } from "react-hook-form";
@@ -9,19 +8,34 @@ import { Input } from "@/components/elements/Input";
 import { Button } from "@/components/elements/Button";
 import { ErrorMessage } from "@/components/elements/ErrorMessage";
 import { AppwriteContext } from "@/components/providers";
+import { GradientOverlayImage } from "@/components/elements/GradientOverlayImage";
+import Colors from "@/constants/Colors";
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: "center",
 	},
-	content: {
+	topContainer: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	title: {
+		position: "absolute",
+		top: "20%",
+		fontSize: 64,
+		fontWeight: "bold",
+		color: Colors.text,
+	},
+	bottomContainer: {
 		flex: 1,
 		justifyContent: "flex-end",
 		width: "90%",
 		marginBottom: 40,
 	},
-	title: {
+	bottomTitle: {
+		color: Colors.text,
 		textAlign: "center",
 		fontSize: 24,
 		fontWeight: "bold",
@@ -62,8 +76,16 @@ export default function SignInEmailScreen() {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.content}>
-				<Text style={styles.title}>Sign Up</Text>
+			<GradientOverlayImage
+				source={require("../../../assets/images/auth/signin-bg.png")}
+				containerStyle={{ height: "85%", bottom: 0 }}
+				imageStyle={{ resizeMode: "contain", bottom: 95 }}
+			/>
+			<View style={styles.topContainer}>
+				<Text style={styles.title}>Drawaday</Text>
+			</View>
+			<View style={styles.bottomContainer}>
+				<Text style={styles.bottomTitle}>Sign in with email</Text>
 				<View style={styles.form}>
 					<Input
 						control={control}

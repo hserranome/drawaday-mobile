@@ -1,33 +1,69 @@
-import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import Colors from "@/constants/Colors";
+import { Pressable, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 
 const styles = StyleSheet.create({
-	button: {
-		width: "100%",
-		backgroundColor: "#f0f0f0",
+	container: {
 		paddingVertical: 10,
 		paddingHorizontal: 20,
 		borderRadius: 1000,
 		overflow: "hidden",
+		backgroundColor: Colors.text,
 	},
+	pressable: {},
 	text: {
-		color: "#000",
 		width: "100%",
 		textAlign: "center",
+		color: Colors.background,
 		fontSize: 20,
 		fontWeight: "600",
 	},
 });
 
-export type ButtonProps = {
+import { PropsWithChildren, useCallback } from "react";
+import { Link } from "expo-router";
+
+export type ButtonProps = PropsWithChildren<{
 	label?: string;
 	onPress?: () => void;
 	disabled?: boolean;
+	href?: any;
 	containerStyle?: StyleProp<ViewStyle>;
+	pressableStyles?: StyleProp<ViewStyle>;
+	textStyle?: StyleProp<TextStyle>;
+}>;
+
+export const Button = ({
+	label,
+	onPress,
+	disabled,
+	href,
+	containerStyle,
+	pressableStyles,
+	textStyle,
+	children,
+}: ButtonProps) => {
+	const Wrapper = useCallback(
+		(props: any) =>
+			href ? (
+				<View {...props}>
+					<Link asChild href={href} children={props.children} />
+				</View>
+			) : (
+				<View {...props} />
+			),
+		[href]
+	);
+	return (
+		<Wrapper style={[styles.container, containerStyle]}>
+			<Pressable
+				style={[styles.pressable, pressableStyles]}
+				onPress={!href ? onPress : null}
+				disabled={disabled}
+				android_ripple={{ color: "#f0f", borderless: true, radius: 250 }}
+			>
+				<Text style={[styles.text, textStyle]}>{label}</Text>
+				{children}
+			</Pressable>
+		</Wrapper>
+	);
 };
-export const Button = ({ label, onPress, disabled, containerStyle }: ButtonProps) => (
-	<View style={containerStyle}>
-		<Pressable style={styles.button} onPress={onPress} disabled={disabled}>
-			<Text style={styles.text}>{label}</Text>
-		</Pressable>
-	</View>
-);

@@ -1,7 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import * as Crypto from "expo-crypto";
 
-import { Text, View } from "@/components/elements/Themed";
 import { useCallback, useContext } from "react";
 import { appw } from "@/api/appwrite";
 import { useForm } from "react-hook-form";

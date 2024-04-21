@@ -1,20 +1,17 @@
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
-import { Text } from "@/components/elements/Themed";
 import { CTALinkButton } from "@/components/elements/CTALinkButton";
 import Colors from "@/constants/Colors";
-import { LinearGradient } from "expo-linear-gradient";
+import { Button } from "@/components/elements/Button";
+import { GradientOverlayImage } from "@/components/elements/GradientOverlayImage";
 
 export default function IndexScreen() {
 	return (
 		<View style={styles.container}>
-			<View style={styles.background}>
-				<Image source={require("../../assets/images/welcome-bg.png")} style={styles.backgroundImage} />
-				<LinearGradient
-					colors={["transparent", "rgba(0,0,0,0.1)", "rgba(0,0,0,0.8)", "rgba(0,0,0,1)"]}
-					style={styles.backgroundOverlay}
-				/>
-			</View>
+			<GradientOverlayImage
+				source={require("../../assets/images/auth/index-bg.png")}
+				containerStyle={{ height: "90%", bottom: 0 }}
+			/>
 			<View style={styles.topContainer}>
 				<Text style={styles.title}>Drawaday</Text>
 			</View>
@@ -23,10 +20,15 @@ export default function IndexScreen() {
 					<Text style={styles.text}>Share your progress,</Text>
 					<Text style={styles.text}>with a drawing every day.</Text>
 				</View>
-				<View style={styles.buttonContainer}>
+				<View style={styles.buttonsContainer}>
 					<CTALinkButton href="auth/email/signup" label="Sign up with email" />
 					<View style={styles.divider} />
-					<CTALinkButton href="auth/email/signin" label="Already have an account? Sign in instead." />
+					<Button
+						href="auth/email/signin"
+						containerStyle={{ backgroundColor: "transparent", paddingVertical: 0 }}
+						textStyle={{ color: Colors.text, fontSize: 16 }}
+						label="Already have an account? Sign in instead."
+					/>
 				</View>
 			</View>
 		</View>
@@ -38,22 +40,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: Colors.background,
 	},
-	background: {
-		position: "absolute",
-		width: "100%",
-		height: "90%",
-		bottom: 0,
-	},
-	backgroundImage: {
-		position: "absolute",
-		width: "100%",
-		height: "100%",
-	},
-	backgroundOverlay: {
-		position: "absolute",
-		width: "100%",
-		height: "100%",
-	},
 	topContainer: {
 		flex: 1,
 		alignItems: "center",
@@ -64,6 +50,7 @@ const styles = StyleSheet.create({
 		top: "20%",
 		fontSize: 64,
 		fontWeight: "bold",
+		color: Colors.text,
 	},
 	bottomContainer: {
 		flex: 1,
@@ -78,8 +65,9 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 24,
 		fontWeight: "bold",
+		color: Colors.text,
 	},
-	buttonContainer: {
+	buttonsContainer: {
 		width: "90%",
 		gap: 10,
 	},

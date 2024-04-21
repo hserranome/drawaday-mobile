@@ -1,5 +1,4 @@
-import { StyleSheet, StyleProp, TextInput, ViewStyle } from "react-native";
-import { View } from "@/components/elements/Themed";
+import { StyleSheet, StyleProp, TextInput, ViewStyle, View } from "react-native";
 import { Control, Controller, UseControllerProps } from "react-hook-form";
 import { ErrorMessage } from "../ErrorMessage";
 import Colors from "@/constants/Colors";
