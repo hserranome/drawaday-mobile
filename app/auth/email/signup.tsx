@@ -8,7 +8,7 @@ import { AppwriteException } from "react-native-appwrite/src";
 import { Input } from "@/components/elements/Input";
 import { Button } from "@/components/elements/Button";
 import { ErrorMessage } from "@/components/elements/ErrorMessage";
-import { AppwriteContext } from "@/components/providers";
+import { AppwriteContext, SignUpFormData } from "@/components/providers";
 import { GradientOverlayImage } from "@/components/elements/GradientOverlayImage";
 import Colors from "@/constants/Colors";
 
@@ -31,12 +31,6 @@ const styles = StyleSheet.create({
 	},
 });
 
-type SignUpFormData = {
-	email: string;
-	password: string;
-	username: string;
-};
-
 export default function SignUpEmailScreen() {
 	const {
 		control,
@@ -45,31 +39,13 @@ export default function SignUpEmailScreen() {
 		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<SignUpFormData>();
-	// const { setUser } = useContext(AppwriteContext);
+	const { signUp } = useContext(AppwriteContext);
 
-	const onSubmit = useCallback(async ({ email, password, username }: SignUpFormData) => {
-		try {
-			await appw.account.create(Crypto.randomUUID(), email, password, username);
-			await appw.account.createEmailSession(email, password);
-			// setUser(await appw.account.get());
-		} catch (error: AppwriteException | any) {
-			if (error instanceof AppwriteException) {
-				return setError("root.serverError", {
-					type: String(error.code),
-					message: (() => {
-						switch (error.code) {
-							case 409:
-								return "Email is already in use";
-							default:
-								console.error(error, error.code);
-								return `An unexpected error occurred (${error.code})`;
-						}
-					})(),
-				});
-			}
-			console.error(error);
-		}
-	}, []);
+	const onSubmit = async ({ email, password, username }: SignUpFormData) => {
+		signUp({ email, password, username }).catch((error) => {
+			setError("root.serverError", { message: error });
+		});
+	};
 
 	return (
 		<>

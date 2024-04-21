@@ -1,6 +1,5 @@
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import * as Crypto from "expo-crypto";
 import Colors from "@/constants/Colors";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import { useRef, useState } from "react";
@@ -10,6 +9,7 @@ import { Input } from "../Input";
 import { Button } from "../Button";
 import { LinearGradient } from "expo-linear-gradient";
 import { appw } from "@/api/appwrite";
+import { ID } from "react-native-appwrite/src";
 
 type CreateModalProps = {
 	onClose?: () => void;
@@ -95,8 +95,7 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 				images.map(async ({ uri }, index) => {
 					setImages((current) => current.map((item, i) => (i === index ? { ...item, status: "loading" } : item)));
 					const file = new File([uri], uri);
-					const fileId = Crypto.randomUUID();
-					return appw.storage.createFile("post-files", fileId, {
+					return appw.storage.createFile("post-files", ID.unique(), {
 						name: file.name,
 						type: "image/jpg",
 						size: file.size,
@@ -105,7 +104,7 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 				})
 			);
 
-			const post = await appw.databases.createDocument("posts", "posts", Crypto.randomUUID(), {
+			const post = await appw.databases.createDocument("posts", "posts", ID.unique(), {
 				description,
 				files: files.map(({ $id }) => $id),
 			});

@@ -2,22 +2,17 @@ import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/elements/Themed";
 import { Button } from "@/components/elements/Button";
-import { useCallback, useContext } from "react";
-import { useRouter } from "expo-router";
+import { useContext } from "react";
 import { AppwriteContext } from "@/components/providers";
 
 export default function ProfileScreen() {
-	const { logout } = useContext(AppwriteContext);
-
-	const signout = useCallback(async () => {
-		logout();
-	}, []);
+	const { logOut } = useContext(AppwriteContext);
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Profile</Text>
 			<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-			<Button label="Sign Out" onPress={signout} />
+			<Button label="Sign Out" onPress={logOut} />
 		</View>
 	);
 }

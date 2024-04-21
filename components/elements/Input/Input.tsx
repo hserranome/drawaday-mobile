@@ -11,8 +11,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 20,
 		fontSize: 14,
-		borderColor: "gray",
-		borderWidth: 1,
 	},
 	errorMessage: {
 		fontSize: 12,
@@ -31,6 +29,8 @@ export type InputProps = {
 	onChangeText?: (text: string) => void;
 	containerStyle?: StyleProp<ViewStyle>;
 	secureTextEntry?: TextInput["props"]["secureTextEntry"];
+	autoCapitalize?: TextInput["props"]["autoCapitalize"];
+	autoComplete?: TextInput["props"]["autoComplete"];
 	keyboardType?: TextInput["props"]["keyboardType"];
 	returnKeyType?: TextInput["props"]["returnKeyType"];
 	onSubmitEditing?: TextInput["props"]["onSubmitEditing"];
@@ -47,6 +47,8 @@ export const Input = ({
 	value,
 	onSubmitEditing,
 	keyboardType,
+	autoCapitalize,
+	autoComplete,
 	secureTextEntry,
 	containerStyle,
 	onChangeText,
@@ -70,6 +72,8 @@ export const Input = ({
 						secureTextEntry={secureTextEntry}
 						onSubmitEditing={onSubmitEditing}
 						keyboardType={keyboardType}
+						autoCapitalize={autoCapitalize}
+						autoComplete={autoComplete}
 					/>
 				)}
 			/>

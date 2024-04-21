@@ -7,7 +7,7 @@ import { AppwriteException } from "react-native-appwrite/src";
 import { Input } from "@/components/elements/Input";
 import { Button } from "@/components/elements/Button";
 import { ErrorMessage } from "@/components/elements/ErrorMessage";
-import { AppwriteContext } from "@/components/providers";
+import { AppwriteContext, SignInFormData } from "@/components/providers";
 import { GradientOverlayImage } from "@/components/elements/GradientOverlayImage";
 import Colors from "@/constants/Colors";
 
@@ -30,11 +30,6 @@ const styles = StyleSheet.create({
 	},
 });
 
-type SignInFormData = {
-	email: string;
-	password: string;
-};
-
 export default function SignInEmailScreen() {
 	const {
 		control,
@@ -43,12 +38,11 @@ export default function SignInEmailScreen() {
 		setError,
 		formState: { errors, isSubmitting },
 	} = useForm<SignInFormData>();
-	const { login } = useContext(AppwriteContext);
+	const { signIn } = useContext(AppwriteContext);
 
 	const onSubmit = async ({ email, password }: SignInFormData) => {
-		console.log("onSubmit");
-		login(email, password).catch((error) => {
-			console.error(error);
+		signIn({ email, password }).catch((error) => {
+			setError("root.serverError", { message: error });
 		});
 	};
 
@@ -66,14 +60,13 @@ export default function SignInEmailScreen() {
 					name="email"
 					placeholder="Email"
 					keyboardType="email-address"
+					autoCapitalize="none"
+					autoComplete="email"
 					rules={{
-						required: {
-							value: true,
-							message: "Email is required",
-						},
+						required: { value: true, message: "Email is required" },
 						pattern: {
 							value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-							message: "invalid email address",
+							message: "Invalid email address",
 						},
 					}}
 					errors={errors}
@@ -87,8 +80,12 @@ export default function SignInEmailScreen() {
 					name="password"
 					placeholder="Password"
 					secureTextEntry={true}
+					autoCapitalize="none"
+					autoComplete="password"
 					rules={{
 						required: { value: true, message: "Password is required" },
+						minLength: { value: 8, message: "Password must be at least 8 characters" },
+						maxLength: { value: 256, message: "Password must be at most 32 characters" },
 					}}
 					errors={errors}
 					disabled={isSubmitting}
