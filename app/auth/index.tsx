@@ -4,6 +4,7 @@ import { CTALinkButton } from "@/components/elements/CTALinkButton";
 import Colors from "@/constants/Colors";
 import { Button } from "@/components/elements/Button";
 import { GradientOverlayImage } from "@/components/elements/GradientOverlayImage";
+import { AuthViewContainer } from "@/components/elements/AuthViewContainer";
 
 const styles = StyleSheet.create({
 	titleContainer: {
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
 
 export default function IndexScreen() {
 	return (
-		<>
+		<AuthViewContainer>
 			<GradientOverlayImage
 				source={require("../../assets/images/auth/index-bg.png")}
 				containerStyle={{ height: "92%", bottom: 0 }}
@@ -51,6 +52,6 @@ export default function IndexScreen() {
 					label="Already have an account? Sign in instead."
 				/>
 			</View>
-		</>
+		</AuthViewContainer>
 	);
 }

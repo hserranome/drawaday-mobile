@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Stack, Tabs, useRouter } from "expo-router";
 
 import Colors from "@/constants/Colors";
 import { useClientOnlyValue } from "@/utils/useClientOnlyValue";
 import { CreateModal } from "@/components/elements/CreateModal";
+import { AppwriteContext } from "@/components/providers";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>["name"]; color: string }) {
@@ -12,8 +13,10 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>["nam
 }
 
 export default function AppLayout() {
+	const { initialized } = useContext(AppwriteContext);
 	const [createModalVisible, setCreateModalVisible] = useState(false);
 
+	if (!initialized) return <></>;
 	return (
 		<>
 			<Tabs

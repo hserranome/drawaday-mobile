@@ -10,7 +10,7 @@ import { AppwriteProvider } from "@/components/providers";
 export { ErrorBoundary } from "expo-router";
 
 export const unstable_settings = {
-	initialRouteName: "(app)",
+	initialRouteName: "app/index",
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -34,10 +34,7 @@ function RootLayoutNav() {
 	return (
 		<AppwriteProvider>
 			<ThemeProvider value={DarkTheme}>
-				<Stack>
-					<Stack.Screen name="(app)" options={{ headerShown: false }} />
-					<Stack.Screen name="auth" options={{ headerShown: false }} />
-				</Stack>
+				<Stack screenOptions={{ headerShown: false }} />
 			</ThemeProvider>
 		</AppwriteProvider>
 	);

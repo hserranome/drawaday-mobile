@@ -8,6 +8,7 @@ import { ErrorMessage } from "@/components/elements/ErrorMessage";
 import { AppwriteContext, SignUpFormData } from "@/components/providers";
 import { GradientOverlayImage } from "@/components/elements/GradientOverlayImage";
 import Colors from "@/constants/Colors";
+import { AuthViewContainer } from "@/components/elements/AuthViewContainer";
 
 const styles = StyleSheet.create({
 	title: {
@@ -45,7 +46,7 @@ export default function SignUpEmailScreen() {
 	};
 
 	return (
-		<>
+		<AuthViewContainer>
 			<GradientOverlayImage
 				source={require("../../assets/images/auth/signin-bg.png")}
 				containerStyle={{ height: "85%", bottom: 0 }}
@@ -108,6 +109,6 @@ export default function SignUpEmailScreen() {
 				/>
 				<ErrorMessage message={errors?.root?.serverError?.message} />
 			</View>
-		</>
+		</AuthViewContainer>
 	);
 }

@@ -1,8 +1,7 @@
-import { Slot } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "@/constants/Colors";
-import { LinearGradient } from "expo-linear-gradient";
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,16 +34,14 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default function AuthLayout() {
+export const AuthViewContainer = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<View style={styles.container}>
-			<View style={styles.content}>
-				<Slot />
-			</View>
+			<View style={styles.content}>{children}</View>
 			<View style={styles.topContainer}>
 				<LinearGradient colors={["rgba(0,0,0,1)", "rgba(0,0,0,0.8)", "transparent"]} style={styles.topGradient} />
 				<Text style={styles.title}>Drawaday</Text>
 			</View>
 		</View>
 	);
-}
+};
