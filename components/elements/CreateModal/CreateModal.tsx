@@ -2,12 +2,11 @@ import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-nati
 import * as ImagePicker from "expo-image-picker";
 import Colors from "@/constants/Colors";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Camera, CameraType, FlashMode } from "expo-camera";
 import { Image } from "expo-image";
 import { Input } from "../Input";
 import { Button } from "../Button";
-import { LinearGradient } from "expo-linear-gradient";
 import { appw } from "@/api/appwrite";
 import { ID } from "react-native-appwrite/src";
 
@@ -30,10 +29,12 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 	const cameraRef = useRef<Camera>(null);
 	const imageScrollViewRef = useRef<ScrollView>(null);
 
-	const toggleCameraType = () =>
-		setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back));
+	const toggleCameraType = useCallback(
+		() => setType((current) => (current === CameraType.back ? CameraType.front : CameraType.back)),
+		[]
+	);
 
-	const onFlashTypeSwitch = () => {
+	const onFlashTypeSwitch = useCallback(() => {
 		setFlashMode((current) => {
 			switch (current) {
 				case FlashMode.off:
@@ -45,9 +46,9 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 					return FlashMode.off;
 			}
 		});
-	};
+	}, []);
 
-	const takePicture = async () => {
+	const takePicture = useCallback(async () => {
 		var startTime = performance.now();
 
 		const photo = await cameraRef.current?.takePictureAsync({
@@ -66,9 +67,9 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 		setImages((current) => [...current, { uri: photo.uri, description: "" }]);
 		setSelectedImage(images.length);
 		imageScrollViewRef.current?.scrollToEnd({ animated: true });
-	};
+	}, [images]);
 
-	const pickImages = async () => {
+	const pickImages = useCallback(async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			allowsMultipleSelection: true,
 			quality: 1,
@@ -80,15 +81,15 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 		setImages((current) => [...current, ...assets.map(({ uri }) => ({ uri, description: "" }))]);
 		setSelectedImage(images.length);
 		imageScrollViewRef.current?.scrollToEnd({ animated: true });
-	};
+	}, [images]);
 
-	const onImageSelect = (index: number) => setSelectedImage(index);
-	const onRemoveImage = (index: number) => {
+	const onImageSelect = useCallback((index: number) => setSelectedImage(index), []);
+	const onRemoveImage = useCallback((index: number) => {
 		setImages((current) => current.filter((_, i) => i !== index));
 		setSelectedImage((current) => (current ? Math.min(0, current - 1) : null));
-	};
+	}, []);
 
-	const onSubmit = async () => {
+	const onSubmit = useCallback(async () => {
 		try {
 			if (images.length === 0) return;
 			const files = await Promise.all(
@@ -112,9 +113,9 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 		} catch (error) {
 			console.error("onSubmit", error);
 		}
-	};
+	}, [images, description]);
 
-	const renderImageStatusIcon = (status: ImageItem["status"]) => {
+	const renderImageStatusIcon = useCallback((status: ImageItem["status"]) => {
 		switch (status) {
 			case "loading":
 				return <FontAwesome6 name="spinner" style={styles.imageBottomIcon} />;
@@ -125,7 +126,33 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 			default:
 				return null;
 		}
-	};
+	}, []);
+
+	const renderImages = useCallback(
+		() =>
+			images.length > 0 && (
+				<ScrollView
+					ref={imageScrollViewRef}
+					horizontal
+					style={styles.imagesScrollView}
+					contentContainerStyle={styles.imagesContentContainer}
+				>
+					{images.map(({ uri, status }, index) => (
+						<Pressable
+							key={`image-${index}`}
+							style={[styles.imageContainer, index === selectedImage && styles.imageContainerSelected]}
+							onPress={() => onImageSelect(index)}
+						>
+							<Image source={{ uri }} style={{ width: "100%", height: "100%" }} />
+							{status && <View style={styles.imageStatusContainer}>{renderImageStatusIcon(status)}</View>}
+						</Pressable>
+					))}
+				</ScrollView>
+			),
+		[images, selectedImage]
+	);
+
+	const hasCameraAccess = useMemo(() => !!permission && permission.granted, [permission]);
 
 	return (
 		<Modal animationType="slide" transparent={true}>
@@ -133,70 +160,62 @@ export const CreateModal = ({ onClose }: CreateModalProps) => {
 				<View style={styles.mainImageContainer}>
 					{selectedImage === null && (
 						<>
-							{permission && permission.granted ? (
-								<Camera ref={cameraRef} style={styles.camera} type={type} flashMode={flashMode}>
-									<View style={styles.mainImageBottom}>
-										<Pressable onPress={toggleCameraType}>
-											<FontAwesome name="refresh" style={styles.imageBottomIcon} />
-										</Pressable>
-										<Pressable onPress={takePicture}>
-											<View style={styles.shutterButton}>
-												<View style={styles.shutterButtonInner} />
-											</View>
-										</Pressable>
-										<Pressable onPress={pickImages}>
-											<FontAwesome name="image" style={styles.imageBottomIcon} />
-										</Pressable>
-									</View>
-								</Camera>
+							{hasCameraAccess ? (
+								<Camera ref={cameraRef} style={styles.camera} type={type} flashMode={flashMode} />
 							) : (
-								<Text>Camera permission denied</Text>
+								<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+									<Text style={{ color: "white", fontSize: 18, marginBottom: 20 }}>Camera permission denied</Text>
+									<Button label="Allow camera" onPress={requestPermission} />
+								</View>
 							)}
+							<View style={styles.mainImageBottom}>
+								{renderImages()}
+								<View style={styles.imageBottomButtons}>
+									{hasCameraAccess ? (
+										<>
+											<Pressable onPress={toggleCameraType}>
+												<FontAwesome name="refresh" style={styles.imageBottomIcon} />
+											</Pressable>
+											<Pressable onPress={takePicture}>
+												<View style={styles.shutterButton}>
+													<View style={styles.shutterButtonInner} />
+												</View>
+											</Pressable>
+										</>
+									) : (
+										<>
+											<View />
+											<View />
+										</>
+									)}
+									<Pressable onPress={pickImages}>
+										<FontAwesome name="image" style={styles.imageBottomIcon} />
+									</Pressable>
+								</View>
+							</View>
 						</>
 					)}
 					{selectedImage !== null && (
 						<View style={{ width: "100%", height: "100%" }}>
 							<Image source={{ uri: images?.[selectedImage].uri }} style={{ width: "100%", height: "100%" }} />
 							<View style={styles.mainImageBottom}>
-								<Pressable onPress={() => onRemoveImage(selectedImage)}>
-									<FontAwesome name="trash" style={styles.imageBottomIcon} />
-								</Pressable>
-								<Pressable onPress={() => setSelectedImage(null)}>
-									<FontAwesome name="plus" style={styles.imageBottomIcon} />
-								</Pressable>
+								{renderImages()}
+								<View style={styles.imageBottomButtons}>
+									<Pressable onPress={() => onRemoveImage(selectedImage)}>
+										<FontAwesome name="trash" style={styles.imageBottomIcon} />
+									</Pressable>
+									<Pressable onPress={() => setSelectedImage(null)}>
+										<FontAwesome name="plus" style={styles.imageBottomIcon} />
+									</Pressable>
+								</View>
 							</View>
 						</View>
 					)}
 				</View>
-				{images.length > 0 && (
-					<ScrollView
-						ref={imageScrollViewRef}
-						horizontal
-						style={styles.imagesScrollView}
-						contentContainerStyle={styles.imagesContentContainer}
-					>
-						{images.map(({ uri, status }, index) => (
-							<Pressable
-								key={`image-${index}`}
-								style={[styles.imageContainer, index === selectedImage && styles.imageContainerSelected]}
-								onPress={() => onImageSelect(index)}
-							>
-								<Image source={{ uri }} style={{ width: "100%", height: "100%" }} />
-								{status && <View style={styles.imageStatusContainer}>{renderImageStatusIcon(status)}</View>}
-							</Pressable>
-						))}
-					</ScrollView>
-				)}
 				<View style={styles.form}>
 					<Input name="description" placeholder="Title" value={description} onChangeText={setDescription} />
 					<Button label="Create" onPress={onSubmit} containerStyle={styles.button} />
 				</View>
-				<LinearGradient
-					colors={["rgba(0,0,0,0.2)", "transparent"]}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 0.35, y: 0.5 }}
-					style={styles.containerTopBackground}
-				/>
 				<View style={styles.containerTop}>
 					<Pressable onPress={onClose} style={styles.closeButton}>
 						<FontAwesome name="close" style={styles.topIcon} />
@@ -293,6 +312,8 @@ const styles = StyleSheet.create({
 	mainImageContainer: {
 		alignSelf: "center",
 		borderRadius: 10,
+		borderWidth: 1,
+		borderColor: Colors.text,
 		overflow: "hidden",
 		width: "95%",
 		flex: 1,
@@ -305,10 +326,13 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		bottom: 0,
 		width: "100%",
+	},
+	imageBottomButtons: {
+		height: 60,
 		flexDirection: "row",
 		justifyContent: "space-between",
-		alignItems: "flex-end",
-		padding: 20,
+		alignItems: "center",
+		margin: 20,
 	},
 	imageBottomIcon: {
 		fontSize: 24,
