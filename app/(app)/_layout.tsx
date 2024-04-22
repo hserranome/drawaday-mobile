@@ -29,25 +29,29 @@ export default function AppLayout() {
 				<Tabs.Screen
 					name="index"
 					options={{
-						title: "",
+						headerTitle: "Your dashboard",
+						tabBarLabelStyle: { display: "none" },
 						tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
 					}}
 				/>
 				<Tabs.Screen
-					name="create"
+					name="explore"
 					options={{
-						title: "",
-						headerShown: false,
-						tabBarIcon: ({ color }) => <TabBarIcon name="plus-square-o" color={color} />,
+						headerTitle: "Explore",
+						headerShown: true,
+						tabBarLabelStyle: { display: "none" },
+						tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
 					}}
 				/>
 				<Tabs.Screen
 					name="profile"
 					options={{
-						title: "",
-						tabBarIcon: ({ color }) => <TabBarIcon name="pencil-square" color={color} />,
+						headerTitle: "Profile",
+						tabBarLabelStyle: { display: "none" },
+						tabBarIcon: ({ color }) => <TabBarIcon name="user-circle" color={color} />,
 					}}
 				/>
+				<Tabs.Screen name="create" options={{ href: null }} />
 			</Tabs>
 		</>
 	);

@@ -1,6 +1,5 @@
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { SplashScreen, useRouter } from "expo-router";
-import * as Crypto from "expo-crypto";
 import { appw } from "@/api/appwrite";
 import { AppwriteException, ID, Models } from "react-native-appwrite/src";
 
@@ -106,7 +105,7 @@ export function AppwriteProvider({ children }: PropsWithChildren) {
 	};
 
 	useEffect(() => {
-		if (user) router.replace("/app/");
+		if (user) router.replace("/(app)/");
 		if (!user) router.replace("/auth/");
 	}, [user]);
 

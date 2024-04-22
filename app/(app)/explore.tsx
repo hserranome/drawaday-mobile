@@ -9,9 +9,7 @@ import { appw } from "@/api/appwrite";
 import { ID } from "react-native-appwrite/src";
 import { Button } from "@/components/elements/Button";
 import { Input } from "@/components/elements/Input";
-import { Stack, useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 type CreateModalProps = {
 	onClose?: () => void;
@@ -23,8 +21,6 @@ type ImageItem = {
 };
 
 export default function CreateScreen() {
-	const insets = useSafeAreaInsets();
-
 	const [description, setDescription] = useState("");
 	const [images, setImages] = useState<ImageItem[]>([]);
 	const [selectedImage, setSelectedImage] = useState<number | null>(null);
@@ -157,7 +153,7 @@ export default function CreateScreen() {
 	const hasCameraAccess = useMemo(() => !!permission && permission.granted, [permission]);
 
 	return (
-		<View style={[styles.wrapper, { paddingTop: insets.top }]}>
+		<View style={styles.wrapper}>
 			<View style={styles.container}>
 				<View style={styles.mainImageContainer}>
 					{selectedImage === null && (
